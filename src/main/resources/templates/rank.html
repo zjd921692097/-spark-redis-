@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="/css/table.css"/>
+    <script th:inline="javascript">
+        // <![CDATA[
+        function refresh_table(){
+            $.ajax({
+                url:"/getRankList",
+                data:{username:"xxx"},
+                type:"get",
+                success:function(data){
+                    var dataObj = JSON.parse(data);
+                    var user = [[${playerlist}]];
+                    var objTable=document.getElementById("table");
+                    var Rows=objTable.rows.length;
+                    console.log(Rows);
+                    for(var i=Rows-1;i>0;i--){
+                        objTable.deleteRow(i);
+                    }
+                    for (var i = 0; i < dataObj.length; i++) {
+                        tr=objTable.insertRow();
+                        td1=tr.insertCell();
+                        td1.innerHTML=i;
+                        td2=tr.insertCell();
+                        td2.innerHTML=dataObj[i].name;
+                        td3=tr.insertCell();
+                        td3.innerHTML=dataObj[i].grade;
+                    }
+                    setTimeout('refresh_table()',1000);
+                } ,
+                error : function() {
+                    alert('i fail ');
+                }
+            });
+        }
+        window.onload=function(){
+            setTimeout('refresh_table()',0);
+        }
+        //  ]]>
+    </script>
+</head>
+
+<body>
+
+<table id="table" border="1">
+    <tr>
+        <th>Rank</th>
+        <th>Playe Name</th>
+        <th>Grade</th>
+    </tr>
+
+</table>
+
+
+</body>
+
+</html>

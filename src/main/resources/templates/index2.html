@@ -1,0 +1,110 @@
+<html xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+<meta charset="UTF-8"/>
+<title>HTML5笑脸样式的音乐播放器DEMO演示</title>
+	<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+	<script th:inline="javascript">
+
+    var fun=function(){
+
+        var res=document.getElementById("td1").innerText;
+        document.getElementById("td2").innerText=res;
+    }
+
+
+    function refresh_table(mName){
+        $.ajax({
+
+            url:"/getMusic",
+            data:{musicname:decodeURI(mName)},
+            type:"get",
+            success:function(data){
+
+
+                var audioElement = document.getElementById('audio');
+                audioElement.setAttribute('src', decodeURI(data));
+            } ,
+            error : function() {
+                alert('i fail ');
+            }
+        });
+    }
+window.onload=function(){
+
+   var canvas=document.getElementById('canvas');
+   if(canvas.getContext){
+		var ctx=canvas.getContext("2d");
+		ctx.beginPath();
+		ctx.strokeStyle='darkgreen';
+		ctx.lineCap='round';
+		ctx.lineWidth=6;
+		ctx.arc(160,160,150,0,Math.PI,false);
+		ctx.stroke();
+   }
+    setTimeout('refresh_table(window.location.href)',0);
+}
+</script>
+</head>
+
+<body>
+
+<div id="container">
+	<canvas id="canvas" width="320" height="320">对不起，你的浏览器不支持Canvas标签！</canvas>
+	<canvas id="progress" width="320" height="320"></canvas><!-- progress bar -->
+	<div id="player">
+		<audio id="audio" controls="controls">
+
+			<source src="" codecs="mp3"></source>
+
+		</audio>
+		<div class="cover">
+			<div class="controls">
+				<div class="play_pause" id="play" title="Play" onClick="togglePlay()"><i>&#xe600;</i></div>
+				<div class="play_pause" id="replay"  onclick="replayAudio()"><i>&#xe607;</i></div>
+				<div class="voice"><i>&#xe608;</i><input id="volume" name="volume" min="0" max="1" step="0.1" type="range" onChange="setVolume()" /></div>
+				<div id="times">00:00/00:00</div>
+			</div><!-- #controls -->
+			<div class="info">
+				<p class="song"><a href="#" target="_blank">Abitude</a></p>
+				<p class="author"><a href="#" target="_blank">Abi</a></p>
+			</div>
+		</div><!-- #cover -->
+	</div><!-- #player -->
+
+</div><!-- #container -->
+
+<script src="js/index.js"></script>
+
+<!--
+<table id="table" border="1" align="center">
+	<tr>
+		<th>Rank</th>
+		<th>Playe Name</th>
+		<th>Grade</th>
+	</tr>
+
+</table>-->
+
+
+<!--<table id="table" border="1">
+	<tr>
+		<th>name</th>
+		<th>playName</th>
+
+	</tr>
+
+
+
+	<tr th:each="player,playerStat:${musiclist}">
+
+	<input type="radio" onclick="fun()" name="all_row"/>
+		<td th:text="${player.name}"></td>
+		<td th:text="${player.address}"></td>
+
+	</tr>
+</table>-->
+
+</body>
+</html>

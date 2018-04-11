@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body >
+<table id="t2">
+    <tr>
+        <td width="10%" height="22"  bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">RANK</span></div></td>
+        <td width="10%" height="22" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">Name</span></div></td>
+        <td width="10%" height="22"  bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">Score</span></div></td>
+
+    </tr>
+</table>
+</body>
+<script>
+    window.onload=loadData();
+    function loadData(){
+        $.ajax({
+            type: "POST",
+            url: "",
+            dataType: "json",
+            data:{},
+            success: function(returnedData){//查询成功之后填充表格
+                var html = "";
+                var tdHead = "<td height='20'><div align='center'><span class='STYLE1'>";
+                var tdFoot = "</span></div></td>";
+                $("#t2 tr:gt(0)").remove();//第一行是table的表格头不需清除。
+                for(var i=0;i<returnedData.length;i++){
+                    var countInfo = returnedData[i];
+                    var rank = i+1;
+                    var name = countInfo.name;
+                    var score = countInfo.grade;
+                    html += "<tr>" + tdHead + rank + tdFoot +
+                        tdHead + name + tdFoot +
+                        tdHead + score + tdFoot +  "</tr>";
+                }
+                $("#t2").append(html);//将新数据填充到table
+            }
+        });
+    }
+</script>
+</html>
